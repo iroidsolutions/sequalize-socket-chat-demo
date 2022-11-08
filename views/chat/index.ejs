@@ -111,9 +111,10 @@
                 }
                 
             });
-            $(".messages-content").animate({
-                    scrollTop: $(".messages").height()
-            }, "slow");
+            // setTimeout(function () {
+                $('.messages-content').scrollTop($('.messages-content')[0].scrollHeight);
+            // }, 2500);
+            
             let data = { roomId: connectedRoomId, senderId: receiverId, receiverId, chatId: 0 }
             console.log(`Room Connected:${connectedRoomId}`)
             roomId = connectedRoomId
@@ -145,9 +146,7 @@
             console.log('new message', data);
             if (data.senderId == receiverId) {
                 $(".messages-content").append("<div class='col-md-12 float-start' ><div class='float-start'><span class='receiver_message'>" + data.message + "</span></p></div>")
-                $(".messages-content").animate({
-                    scrollTop: $(".messages").height()
-                }, "slow");
+                $('.messages-content').scrollTop($('.messages-content')[0].scrollHeight);
                 socket.emit('ReadMessage', data);
             }
             // If User login with 2 device then that type of case to use this type condition 
@@ -174,9 +173,10 @@
             if (data.senderId == senderId) {
                 $("#seen").remove()
                 $(".messages-content div").last().append(`<br><i id="seen" class='fas fa-check-double' style='padding-right: 8px;font-size:10px;color:#07d0e5f2; float: right;'></i>`);
-                $(".messages-content").animate({
-                    scrollTop: $(".messages").height()
-                }, "slow");
+                // $(".messages-content").animate({
+                //     scrollTop: $(".messages").height()
+                // }, "slow");
+                $('.messages-content').scrollTop($('.messages-content')[0].scrollHeight);
             }
         });
 
