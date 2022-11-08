@@ -55,7 +55,19 @@ io.on('connection', function (socket) {
             rooms.push({ senderId, receiverId, roomId, [senderId]: socket.id });
             clientStore.set({ rooms })
         }
-        const result = await commonService.findMany(Chat,{senderId:sender.id , receiverId:receiver.id});
+        var query={
+            [Op.or]: [
+                {
+                    senderId: parseInt(data.senderId),
+                    receiverId:parseInt(data.receiverId)
+                },{
+                    receiverId: parseInt(data.senderId),
+                    senderId: parseInt(data.receiverId)
+                }
+            ],
+        };
+        // const result = await commonService.findMany(Chat,{senderId:data.senderId , receiverId:data.receiverId});
+        const result = await commonService.findRequired(Chat,query);
         console.log(`Room: ${roomId} is connected`);
         socket.join(roomId);
         socket.emit('roomConnected', roomId,sender.fullname,receiver.fullname,result)

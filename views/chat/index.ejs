@@ -96,8 +96,24 @@
         |----------------------------------------------------------------------------------------------------
         */
         socket.on('roomConnected', function (connectedRoomId,user1name='',user2name='',result='') {
-            console.log(result)
             $('#receiver_name').text(user2name)
+            $.each(result.data, function (key, val) {
+                if(senderId!=val.senderId){
+                    $(".messages-content").append("<div class='col-md-12 float-start' ><div class='float-start'><span class='receiver_message'>" + val.message + "</span></p></div>");
+                }else{
+                    $(".messages-content").append(`
+                    <div class="col-12 float-end">
+                        <div class="float-end">
+                            <span class="message">${val.message}<span>
+                        </div>
+                    </div>`
+                );
+                }
+                
+            });
+            $(".messages-content").animate({
+                    scrollTop: $(".messages").height()
+            }, "slow");
             let data = { roomId: connectedRoomId, senderId: receiverId, receiverId, chatId: 0 }
             console.log(`Room Connected:${connectedRoomId}`)
             roomId = connectedRoomId

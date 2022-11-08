@@ -164,6 +164,24 @@ class commonService {
     return data;
   };
 
+  static async findRequired(model, query, options = {}) {
+    options = {
+      where: query,
+      ...options,
+    };
+    const result = await model.paginate(options);
+    const data = {
+      data: result.docs,
+      meta: {
+        total: result.total,
+        perPage: options.paginate || 25,
+        totalPage: result.pages,
+        currentPage: options.page || 1,
+      },
+    };
+    return data;
+  };
+
   /*
    * @description : find all records from table
    * @param  {obj} model : sequelize model
